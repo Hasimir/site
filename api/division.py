@@ -22,6 +22,7 @@ SELECT elect_div FROM com20111216_elb_region WHERE
 
 app = Flask(__name__)
 
+
 def setup_rollbar(environment):
     if 'ROLLBAR_TOKEN' not in os.environ:
         return
@@ -35,6 +36,7 @@ if not app.debug:
     file_handler = RotatingFileHandler(logfile)
     file_handler.setLevel(logging.INFO)
     app.logger.addHandler(file_handler)
+
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -76,6 +78,7 @@ def crossdomain(origin=None, methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
+
 
 @app.route('/division', methods=['GET', 'POST', 'OPTIONS'])
 @crossdomain(origin='*', headers=['Content-Type', 'X-Requested-With'])
