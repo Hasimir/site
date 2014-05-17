@@ -23,7 +23,8 @@ while True:
     if candidate.startswith('state'):
         data['ballot_position'] = int(raw_input('Position  : '))
 
-    open('data/people/' + filename, 'w').write(json.dumps(data, sort_keys=True,
-        indent=4, separators=(',', ': ')))
-    print open('data/people/' + filename).read()
+    dpf = 'data/people/' + filename
+    open(dpf, 'w').write(json.dumps(data, sort_keys=True,
+                                    indent=4, separators=(',', ': ')))
+    print open(dpf).read()
     print ""
