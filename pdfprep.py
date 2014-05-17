@@ -23,6 +23,7 @@ people = {}
 parties = {}
 divisions = {}
 
+
 def sorted_candidates(candidates):
     return [c[:-1] for c in sorted(candidates, key=lambda x: x[3])]
 
@@ -45,7 +46,9 @@ for filename in os.listdir('data/division'):
         continue
 
     division_id = filename[:-5]
-    divisions[division_id] = json.loads(open('data/division/' + filename).read())
+    ddf = 'data/division/' + filename
+    divisions[division_id] = json.loads(open(ddf).read())
+
 
 def group_sort(a, b):
     a_group = a.split('-', 1)[1][:-5]
@@ -62,7 +65,8 @@ for state in ('act', 'nsw', 'nt', 'qld', 'sa', 'tas', 'vic', 'wa'):
         'candidates': [],
     }
 
-    groups = [f for f in os.listdir('data/groups') if f.startswith(state) and f.endswith('.json')]
+    groups = [f for f in os.listdir('data/groups')
+              if f.startswith(state) and f.endswith('.json')]
     groups.sort(cmp=group_sort)
 
     for filename in groups:
@@ -80,14 +84,15 @@ for state in ('act', 'nsw', 'nt', 'qld', 'sa', 'tas', 'vic', 'wa'):
                 'name': group['name'],
             }
             ballot.append(ballot_group)
-        
+
         candidates = []
         for candidate in group['candidates']:
             person = people[candidate]
 
             if person.get('party', None) is not None:
                 c = (person['last_name'], person['first_name'],
-                     parties[person['party']]['name'], person['ballot_position'])
+                     parties[person['party']]['name'],
+                     person['ballot_position'])
             else:
                 c = (person['last_name'], person['first_name'], None,
                      person['ballot_position'])
@@ -122,6 +127,7 @@ for person_id, person in people.items():
 
     division_ballots[division].append(c)
 
+
 def group_sort(a, b):
     a = a['label']
     b = b['label']
@@ -132,7 +138,7 @@ def group_sort(a, b):
         return cmp(a, b)
 
 for state in ballots:
-    ballots[state].sort(group_sort)        
+    ballots[state].sort(group_sort)
 
 for division, candidates in division_ballots.items():
     ballots[division] = (divisions[division]['name'],
