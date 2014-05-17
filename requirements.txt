@@ -1,0 +1,4 @@
+python>=2.6
+python>3.0
+requests>=2.1.0
+bs4>=4.3
