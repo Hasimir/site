@@ -6,8 +6,7 @@ import os
 import random
 import string
 
-from flask import Flask, abort, current_app, jsonify, make_response, redirect, \
-                  request
+from flask import Flask, abort, current_app, jsonify, make_response, redirect, request
 import redis
 import rollbar
 
@@ -18,11 +17,13 @@ MAX_TRIES = 10
 
 app = Flask(__name__)
 
+
 def setup_rollbar(environment):
     if 'ROLLBAR_TOKEN' not in os.environ:
         return
     rollbar.init(os.environ['ROLLBAR_TOKEN'], environment,
                  allow_logging_basic_config=False)
+
 
 def crossdomain(origin=None, methods=None, headers=None,
                 max_age=21600, attach_to_all=True,
@@ -65,6 +66,7 @@ def crossdomain(origin=None, methods=None, headers=None,
         return update_wrapper(wrapped_function, f)
     return decorator
 
+
 def store_at_random_id(ballot, start_length=8):
     r = redis.StrictRedis(host=REDIS_HOST, db=REDIS_DB)
     candidate = None
@@ -89,6 +91,7 @@ def store_at_random_id(ballot, start_length=8):
             tries = 0
 
     return candidate
+
 
 @app.route('/store', methods=['POST', 'OPTIONS'])
 @crossdomain(origin=['*'], headers=['Content-Type', 'X-Requested-With'])
@@ -140,6 +143,7 @@ def store_ballot():
         rollbar.report_exc_info()
         raise
 
+
 @app.route('/b/<ballot_id>')
 @crossdomain(origin=['*'], headers=['Content-Type', 'X-Requested-With'])
 def redirect_ballot(ballot_id):
@@ -155,6 +159,7 @@ def redirect_ballot(ballot_id):
     except:
         rollbar.report_exc_info()
         raise
+
 
 @app.route('/store/<ballot_id>', methods=['GET', 'OPTIONS'])
 @crossdomain(origin=['*'], headers=['Content-Type', 'X-Requested-With'])
@@ -184,4 +189,3 @@ if __name__ == '__main__':
     app.run(debug=True, port=5005)
 else:
     setup_rollbar('production')
-
