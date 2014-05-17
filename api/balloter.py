@@ -66,8 +66,10 @@ LABEL_WIDTH = GROUP_WIDTH - BOX_SIZE - 6 * mm
 
 ballots = cPickle.load(open('ballots.pck'))
 
+
 def disclaimer(c):
     c.drawString(10 * mm, PAGE_HEIGHT - 6 * mm, DISCLAIMER_TEXT)
+
 
 def watermark(c):
     c.saveState()
@@ -78,11 +80,13 @@ def watermark(c):
     c.drawString(40 * mm, 0, "belowtheline.org.au")
     c.restoreState()
 
+
 def end_page(c):
     disclaimer(c)
     c.showPage()
     c.setFont(FONT, FONT_SIZE)
     watermark(c)
+
 
 def draw_text(string, text, font, size, width, leading=None):
     if leading:
@@ -110,6 +114,7 @@ def draw_text(string, text, font, size, width, leading=None):
     else:
         text.textLine(string)
 
+
 def draw_candidate(c, number, family, given, party, i, tl, br, box_gap):
     number = str(number)
     font = pdfmetrics.getFont(FONT)
@@ -120,20 +125,20 @@ def draw_candidate(c, number, family, given, party, i, tl, br, box_gap):
     width = font.stringWidth(number, FONT_SIZE + 1.0)
     c.setFont(FONT, FONT_SIZE + 1.0)
     c.drawCentredString(tl[0] + 1.1 * mm + BOX_SIZE / 2.0,
-                        tl[1] - 2.3 * mm - i * box_gap - (i + 1) * BOX_SIZE + 1.5 * mm,
-                        number)
+                        tl[1] - 2.3 * mm - i * box_gap - (i + 1) * BOX_SIZE + 1.5 * mm, number)
     text = c.beginText(tl[0] + 2 * mm + BOX_SIZE,
                        tl[1] - 3 * mm - i * box_gap - i * BOX_SIZE - 4.5)
     text.setFont(FONT + '-Bold', CANDIDATE_FONT_SIZE,
                  leading=1.1 * CANDIDATE_FONT_SIZE)
     text.textLine(family)
     draw_text(given, text, FONT, CANDIDATE_FONT_SIZE, LABEL_WIDTH,
-                leading=CANDIDATE_FONT_SIZE)
+              leading=CANDIDATE_FONT_SIZE)
     if party:
         draw_text(party.upper(), text, FONT, PARTY_FONT_SIZE, LABEL_WIDTH)
     c.drawText(text)
 
     c.setFont(FONT, FONT_SIZE)
+
 
 def generate(state_only, division, div_ticket, state, sen_ticket):
     container = cStringIO.StringIO()
@@ -251,11 +256,13 @@ def generate(state_only, division, div_ticket, state, sen_ticket):
 
     return container.getvalue()
 
+
 def setup_rollbar(environment):
     if 'ROLLBAR_TOKEN' not in os.environ:
         return
     rollbar.init(os.environ['ROLLBAR_TOKEN'], environment,
                  allow_logging_basic_config=False)
+
 
 @app.route('/pdf', methods=['POST'])
 def pdf():
@@ -274,8 +281,7 @@ def pdf():
                        request.form['state'], senate_ticket)
         response = make_response(pdf)
         response.headers['Content-Type'] = 'application/pdf'
-        response.headers['Content-Disposition'] = \
-	    'attachment; filename=ballot.pdf'
+        response.headers['Content-Disposition'] = 'attachment; filename=ballot.pdf'
         return response
     except:
         rollbar.report_exc_info()
