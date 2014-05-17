@@ -7,7 +7,8 @@ import sys
 from bs4 import BeautifulSoup
 import requests
 
-soup = BeautifulSoup(requests.get('http://www.abc.net.au/news/federal-election-2013/guide/candindex/').text)
+url = 'http://www.abc.net.au/news/federal-election-2013/guide/candindex/'
+soup = BeautifulSoup(requests.get(url).text)
 
 parties = {}
 
@@ -53,10 +54,13 @@ for tbody in soup.findAll('tbody'):
                 data['party'] = party
 
         # print filename
-        # print json.dumps(data, sort_keys=True, indent=4, separators=(',', ': '))
-        open('data/people/' + filename, 'w').write(json.dumps(data, sort_keys=True,
-            indent=4, separators=(',', ': ')))
-        print open('data/people/' + filename).read()
+        # print json.dumps(data, sort_keys=True,
+        #                  indent=4, separators=(',', ': '))
+
+        dpef = 'data/people/' + filename
+        open(dpef, 'w').write(json.dumps(data, sort_keys=True,
+                                         indent=4, separators=(',', ': ')))
+        print open(dpef).read()
         print ""
 
 for code, name in parties.items():
@@ -70,7 +74,8 @@ for code, name in parties.items():
 
     filename = '{}.json'.format(code.lower())
 
-    open('data/parties/' + filename, 'w').write(json.dumps(data, sort_keys=True,
-        indent=4, separators=(',', ': ')))
-    print open('data/parties/' + filename).read()
+    dpaf = 'data/parties/' + filename
+    open(dpaf, 'w').write(json.dumps(data, sort_keys=True,
+                                     indent=4, separators=(',', ': ')))
+    print open(dpaf).read()
     print ""
