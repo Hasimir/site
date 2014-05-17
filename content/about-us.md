@@ -23,7 +23,7 @@ maintain a blog.
 
 Originally hailing from Adelaide, Michael Pearson is a mostly apolitical
 thirty-something web developer and systems administrator. He lives in a tree
-fort in the Dandenong Ranges with his marine biologist wife Kate and their
+fort in the Dandenong Ranges with his marine biologist wife, Kate, and their
 Rottweiler, Amos. When not preventing his yard from being overrun by bark and
 weeds he works for [bikeexchange.com.au](http://www.bikeexchange.com.au) in
 Ruby and Javascript. Michael's twitter is
