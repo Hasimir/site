@@ -20,7 +20,8 @@ while True:
     if website:
         data['website'] = website
 
-    open('data/parties/' + filename, 'w').write(json.dumps(data, sort_keys=True,
-        indent=4, separators=(',', ': ')))
-    print open('data/parties/' + filename).read()
+    dfp = 'data/parties/' + filename
+    open(dfp, 'w').write(json.dumps(data, sort_keys=True,
+                                    indent=4, separators=(',', ': ')))
+    print open(dfp).read()
     print ""
