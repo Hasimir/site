@@ -26,19 +26,24 @@ ID_TRANSLATION = {
     ord(u"'"): None,
 }
 
+
 def division_name(name):
     return 'division/' + name.lower().translate(ID_TRANSLATION)
+
 
 def candidate_id(first, last):
     first = first.lower().translate(ID_TRANSLATION)
     last = last.lower().translate(ID_TRANSLATION)
     return 'people/{}-{}'.format(last, first)
 
+
 def group_id(state, code):
     return 'group/{}-{}'.format(state.split('/')[1], code.lower())
 
+
 def jsonify(obj):
     return json.dumps(obj, sort_keys=True, indent=4, separators=(',', ': '))
+
 
 def inhale(preload):
     if not os.path.exists(DATA_DIR):
